@@ -86,7 +86,7 @@ button{
   border-radius: 2rem;
   border: none;
   font-size: 1.25rem;
-  margin:1.5rem 0 ;
+  margin: 1rem 0;
   background-color:#4E4E4E;
   color: white;
   cursor: pointer;
@@ -94,12 +94,12 @@ button{
 .sidebar{
   width: 9rem;
   height: 100vh;
-  background-color: #beddfd;
+  background-color: #edf5fe;
 }
 .sidebar h1{
   text-align: center;
   padding: 2rem 0;
-  color: #478FF2;
+  color: #3584f2;
 }
 .sidebar-div{
   display: flex;
@@ -140,23 +140,19 @@ button{
   font-size: 1rem;
 }
 
-/* .sidebar-div-items > div :hover{
-  border: 1px solid ;
-
-} */
 .sidebar-items{
   padding: 5px;
   margin: 0px 10px;
 }
 
 .sidebar-items:hover{
-  box-shadow: 0px 0px 10px #478FF2 ;
+  box-shadow: 0px 0px 10px #3584f2 ;
   border-radius: 1rem;
   color: #478FF2;
 }
 
 .sidebar-items-clicked{
-  box-shadow: 0px 0px 10px #478FF2 ;
+  box-shadow: 0px 0px 10px #3584f2 ;
   border-radius: 1rem;
   color: #478FF2;
 }
@@ -230,10 +226,11 @@ button{
   box-shadow: 1px 1px 10px #dcdee0;
   border-radius: 2rem;
 }
-[name="select-upd"],input{
+[name="select-upd"],.updform-d input{
   margin: 0.3rem 0 1rem 0;
-  height: 3rem;
   width: 100%;
+  height: 3rem;
+ 
   
 }
 .updform-d{
@@ -255,6 +252,7 @@ button{
   border: none;
   color: white;
   font-size: 1rem;
+  cursor: pointer;
 }
 option{
   text-align: center;
