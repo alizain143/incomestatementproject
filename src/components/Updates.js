@@ -1,10 +1,23 @@
+import { addDoc, collection } from "firebase/firestore";
 import React from "react";
 import { connect } from "react-redux";
+import { db } from "../Firebase";
 import { tranAmount, tranComments, tranName, tranType } from "../Reducer";
-
 function Updates(props) {
+  const trancollection = collection(db, "transactionData");
+  const data = {
+    type: props.reducerTran.type,
+    name: props.reducerTran.name,
+    amount: props.reducerTran.amount,
+    comment: props.reducerTran.comments,
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    const timeinms = Date.now();
+    addDoc(trancollection, { ...data, date, time, timeinms });
+    e.target.reset();
   };
   return (
     <div className="updates">

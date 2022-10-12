@@ -1,16 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouseUser,
-  faDollarSign,
-  faSheetPlastic,
   faPenToSquare,
   faRightFromBracket,
+  faSheetPlastic,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { signOut } from "firebase/auth";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../Firebase";
 
 export default function Sidebar() {
-  const userLogout = () => {};
+  const navigate = useNavigate();
+  const userLogout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("signout successful");
+        localStorage.removeItem("token");
+       navigate("/login")
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+  };
 
   return (
     <div className="sidebar">
@@ -21,13 +35,6 @@ export default function Sidebar() {
             <div className="sidebar-items">
               <FontAwesomeIcon icon={faHouseUser} />
               <p>Home</p>
-            </div>
-          </Link>
-
-          <Link to="/main/finances" className="sidebar-link">
-            <div className="sidebar-items">
-              <FontAwesomeIcon icon={faDollarSign} />
-              <p>Finances</p>
             </div>
           </Link>
 

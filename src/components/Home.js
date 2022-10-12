@@ -1,31 +1,90 @@
-import React from 'react'
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import { collection,doc,getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { db } from "../Firebase";
+import Search from "../reusableComponents/Search";
+import { snap } from "./FirebaseFuncs";
 
 export default function Home() {
+  let color;
+  let icon;
+  let selectdata;
+  const [data, setdata] = useState();
+  const [updData, setupdData] = useState([]);
+  const trancollection = collection(db, "transactionData");
+  useEffect(() => {
+    return () => {
+      snap(trancollection, setdata);
+    };
+  }, []);
+
+  
+
+  const handleChange = (value) => {
+    value.preventDefault()
+   const data= getDoc(doc(db,"transactionData","4bzSK8X8UR0k0z6FmWAC"))
+   
+  }
+ 
+  updData[0]? selectdata= updData: selectdata=data 
+  let date = new Date().toLocaleDateString();
+  let time = new Date().toLocaleTimeString();
   return (
-    <div className='home'>
-        <p>date</p>
-        <h1>Hello,Name</h1>
-        <div className='home-div'>
-            <div className='transactions'>
-                <h2>RECENT TRANSACTIONS</h2>
-                <div className='rec-trans-div'>
-                    <div className='rec-t-in-div' >
-                        <p > <FontAwesomeIcon className='plus-icon fa-lg' icon={faPlus} /></p>
-                        <div className='rec-trans'>
-                            <h3>name</h3>
-                            <p>date</p>
-                        </div>
+    <div className="home">
+      <p>
+        {date} , {time}
+      </p>
+      <h1>Hello,Name</h1>
+      <div className="home-div">
+        <div className="transactions">
+          <h2>RECENT TRANSACTIONS</h2>
+          <Search handleChange={handleChange} />
+          {}
+          
+          {selectdata && selectdata 
+            
+
+              .sort((a, b) => {
+                return new Date(a.timeinms) > new Date(b.timeinms);
+              })
+              .slice(0, 4)
+              .map((e) => {
+               
+                  if (e.type === "Expense") {
+                    color = "red";
+                    icon = faMinus;
+                  } else {
+                    color = "rgb(0, 212, 0)";
+                    icon = faPlus;
+                  }
+               
+                return (
+                  <div key={e.id} className="rec-trans-div">
+                    <div className="rec-t-in-div">
+                      <p>
+                        {" "}
+                        <FontAwesomeIcon
+                          className="plus-icon fa-lg"
+                          icon={icon}
+                          style={{ color: color }}
+                        />
+                      </p>
+                      <div className="rec-trans">
+                        <h3>{e.name}</h3>
+                        <p>{e.date}</p>
+                      </div>
                     </div>
-                    <p style={{color:'rgb(0, 212, 0)'}}> $amount</p>
-                </div>
-            </div>
-            <div className='balance'>
-                <h2>BALANCE</h2>
-                <h3>Current Month</h3>
-            </div>
+                    <p style={{ color: color }}> {`${e.amount}`}</p>
+                  </div>
+                );
+              })}
         </div>
+        <div className="balance">
+          <h2>BALANCE</h2>
+          <h3>Current Month</h3>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

@@ -30,12 +30,14 @@ export function conPassword(e) {
     payload: e,
   };
 }
+
 const initDataLogin = {
   loginMail: "",
   loginPass: "",
   signMail: "",
   signPass: "",
   conPass: "",
+  name: "",
 };
 function reducerLogin(state = initDataLogin, action) {
   switch (action.type) {
@@ -63,6 +65,11 @@ function reducerLogin(state = initDataLogin, action) {
       return {
         ...state,
         conPass: action.payload,
+      };
+    case "USER_NAME":
+      return {
+        ...state,
+        name: action.payload,
       };
 
     default:
