@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../Firebase";
-import { emailSignup, passwordSignup } from "../Reducer";
+import { conPassword, emailSignup, passwordSignup } from "../Reducer";
 
 function Signup(props) {
   const navigate = useNavigate();
@@ -41,19 +41,6 @@ function Signup(props) {
             action=""
           >
             <div className="form-input">
-              <label htmlFor="">Name*</label> <br />
-              <input
-                type="text"
-                name=""
-                id="name"
-                placeholder="What's your name?"
-                onChange={(e) => {
-                  props.userName(e.target.value);
-                }}
-                required
-              />
-              <br />
-              <br />
               <label htmlFor="">Email*</label> <br />
               <input
                 type="email"
@@ -90,7 +77,7 @@ function Signup(props) {
                 placeholder="Please confirm your password"
                 required
                 onChange={(e) => {
-                  props.conPassword(e.target.value);
+                  props?.conPassword(e.target.value);
                 }}
               />
             </div>
@@ -112,6 +99,7 @@ function mapStateToProps(gloabalstate) {
 const mapdispatchtoprops = {
   emailSignup,
   passwordSignup,
+  conPassword,
 };
 
 export default connect(mapStateToProps, mapdispatchtoprops)(Signup);
