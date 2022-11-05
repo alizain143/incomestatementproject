@@ -1,6 +1,6 @@
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { collection,doc,getDoc } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../Firebase";
 import Search from "../reusableComponents/Search";
@@ -9,25 +9,33 @@ import { snap } from "./FirebaseFuncs";
 export default function Home() {
   let color;
   let icon;
-  let selectdata;
+
   const [data, setdata] = useState();
-  const [updData, setupdData] = useState([]);
+  const [value, setValue] = useState();
+  const [user, setuser] = useState();
   const trancollection = collection(db, "transactionData");
+  let selectdata = data;
   useEffect(() => {
     return () => {
       snap(trancollection, setdata);
     };
   }, []);
 
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    const userFounded = data.find((e) => {
+      return e.name.toUpperCase() === value.toUpperCase();
+    });
+
+    onSnapshot(doc(db, "transactionData", userFounded.id), (doc) => {
+      setuser([doc.data()]);
+    });
+  };
   const handleChange = (value) => {
-    value.preventDefault()
-   const data= getDoc(doc(db,"transactionData","4bzSK8X8UR0k0z6FmWAC"))
-   
-  }
- 
-  updData[0]? selectdata= updData: selectdata=data 
+    setValue(value);
+  };
+
   let date = new Date().toLocaleDateString();
   let time = new Date().toLocaleTimeString();
   return (
@@ -39,26 +47,24 @@ export default function Home() {
       <div className="home-div">
         <div className="transactions">
           <h2>RECENT TRANSACTIONS</h2>
-          <Search handleChange={handleChange} />
-          {}
-          
-          {selectdata && selectdata 
-            
+          <Search handleChange={handleChange} handleSubmit={handleSubmit} />
+
+          {selectdata &&
+            selectdata
 
               .sort((a, b) => {
                 return new Date(a.timeinms) > new Date(b.timeinms);
               })
               .slice(0, 4)
               .map((e) => {
-               
-                  if (e.type === "Expense") {
-                    color = "red";
-                    icon = faMinus;
-                  } else {
-                    color = "rgb(0, 212, 0)";
-                    icon = faPlus;
-                  }
-               
+                if (e.type === "Expense") {
+                  color = "red";
+                  icon = faMinus;
+                } else {
+                  color = "rgb(0, 212, 0)";
+                  icon = faPlus;
+                }
+
                 return (
                   <div key={e.id} className="rec-trans-div">
                     <div className="rec-t-in-div">
